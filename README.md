@@ -137,15 +137,3 @@ You can skip the initial installation wizard/guide by adding the following envir
 ```
 
 
-
-## Requirements / Dependencies
-
-* Docker
-
-## Version
-
-1.0.0
-
-## License
-
-[MIT](LICENSE)
