@@ -45,8 +45,6 @@ docker-compose rm rocketchat
 docker-compose up -d rocketchat
 ```
 
-<sub>_(* I will update this (git tracked) `docker-compose.yml` file according to new Rocket.Chat releases.)_</sub>
-
 ### Scaling in case of performance issues
 
 This service file supports the `docker-compose` builtin scaling. For example to add 3 additional application containers you can simply invoke:
