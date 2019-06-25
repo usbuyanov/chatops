@@ -1,0 +1,18 @@
+# Don't track MongoDB runtime files
+data/db/*
+!data/db/.gitkeep
+
+# ... Hubot scripts
+data/hubotscripts/*
+!data/hubotscripts/.gitkeep
+
+# ... user upload files
+data/uploads/*
+!data/uploads/.gitkeep
+
+# ... backups
+data/backups/*
+!data/backups/.gitkeep
+
+# Environment variables
+.env

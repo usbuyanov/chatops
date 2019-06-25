@@ -1,0 +1,64 @@
+version: '2'
+
+services:
+  rocketchat:
+    image: rocketchat/rocket.chat:1.0.3
+    restart: unless-stopped
+    command: /bin/sh -c 'INSTANCE_IP=$$(hostname -i) node main.js'
+    mem_limit: 4G
+    volumes:
+     - ./data/uploads:/app/uploads
+     - /tmp:/tmp
+    environment:
+     - PORT=3000
+     - ROOT_URL=http://${ROCKETCHAT_HOST}
+     - MONGO_URL=mongodb://mongo:27017/rocketchat
+     - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+    labels:
+      - "traefik.backend=rocketchat"
+      - "traefik.frontend.rule=Host: ${ROCKETCHAT_HOST}"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:3.2
+    restart: unless-stopped
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0
+    volumes:
+      - ./data/db:/data/db
+      - ./data/backups:/dump
+
+  mongo-init-replica:
+    image: mongo:3.2
+    command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
+    depends_on:
+      - mongo
+
+  traefik:
+    image: traefik:1.6.4
+    restart: unless-stopped
+    command: traefik --web --docker --defaultentrypoints=http --entryPoints='Name:http Address::3000'
+    ports:
+      - 3000:3000
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+# hubot:
+#   image: rocketchat/hubot-rocketchat:1.0.8
+#   restart: unless-stopped
+#   environment:
+#     - MONGODB_URL=mongodb://mongo:27017/hubot-brain
+#     - ROCKETCHAT_URL=rocketchat:3000
+#     - ROCKETCHAT_ROOM=${ROCKETCHAT_ROOM}
+#     - ROCKETCHAT_USER=${ROCKETCHAT_USER}
+#     - ROCKETCHAT_PASSWORD=${ROCKETCHAT_PASSWORD}
+#     - BOT_NAME=${BOT_NAME}
+#     - EXTERNAL_SCRIPTS=${EXTERNAL_SCRIPTS}
+#     - TZ=${TZ}
+#   links:
+#     - rocketchat:rocketchat
+#   volumes:
+#     - ./data/hubotscripts:/home/hubot/scripts
+#   ports:
+#     - 3001:8081
