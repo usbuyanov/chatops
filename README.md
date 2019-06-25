@@ -138,28 +138,7 @@ You can skip the initial installation wizard/guide by adding the following envir
 - OVERWRITE_SETTING_Show_Setup_Wizard=completed
 ```
 
-## Contributing
 
-1. Fork it
-2. Create your feature branch:
-
-```shell
-git checkout -b feature/my-new-feature
-```
-
-3. Commit your changes:
-
-```shell
-git commit -am 'Add some feature'
-```
-
-4. Push to the branch:
-
-```shell
-git push origin feature/my-new-feature
-```
-
-5. Submit a pull request
 
 ## Requirements / Dependencies
 
