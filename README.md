@@ -1,4 +1,4 @@
-# docker-rocketchat
+# rocketchat
 
 My `docker-compose.yml` file/setup to run [Rocket.Chat](https://rocket.chat) in production.
 
